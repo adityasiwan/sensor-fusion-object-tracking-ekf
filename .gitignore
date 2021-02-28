@@ -1,0 +1,7 @@
+dataset/
+results/
+tools/objdet_models/darknet/pretrained/
+tools/objdet_models/resnet/pretrained/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
