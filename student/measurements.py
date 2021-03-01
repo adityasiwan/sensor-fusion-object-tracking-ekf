@@ -47,8 +47,14 @@ class Sensor:
         # TODO Step 4: implement a function that returns True if x lies in the sensor's field of view,
         # otherwise False.
         ############
-
-        return True
+        pos_veh = np.ones((4, 1))
+        pos_veh[0:3] = x[0:3]
+        pos_sens = self.veh_to_sens * pos_veh
+        alpha = np.arctan(pos_sens[1] / pos_sens[0])
+        if alpha > self.fov[0] and alpha < self.fov[1]:
+            return True
+        else:
+            return False
 
         ############
         # END student code
@@ -71,7 +77,19 @@ class Sensor:
             # - return h(x)
             ############
 
-            pass
+            pos_veh = np.ones((4, 1))
+            pos_veh[0:3] = x[0:3]
+            pos_sens = self.veh_to_sens * pos_veh
+            x = pos_sens[0]
+            y = pos_sens[1]
+            z = pos_sens[2]
+            hx = np.zeros((2, 1))
+            if x == 0:
+                raise NameError('Jacobian not defined for x')
+            else:
+                hx[0, 0] = self.c_i - self.f_i * y / x
+                hx[1, 0] = self.c_j - self.f_j * z / x
+                return hx
 
             ############
             # END student code
@@ -115,9 +133,9 @@ class Sensor:
         # TODO Step 4: remove restriction to lidar in order to include camera as well
         ############
 
-        if self.name == 'lidar':
-            meas = Measurement(num_frame, z, self)
-            meas_list.append(meas)
+        meas = Measurement(num_frame, z, self)
+        meas_list.append(meas)
+
         return meas_list
 
         ############
@@ -155,7 +173,15 @@ class Measurement:
             # TODO Step 4: initialize camera measurement including z, R, and sensor
             ############
 
-            pass
+            sigma_cam_i = params.sigma_cam_i
+            sigma_cam_j = params.sigma_cam_j
+            self.R = np.zeros((2, 2))
+            self.R[0][0] = sigma_cam_i ** 2
+            self.R[1][1] = sigma_cam_j ** 2
+            self.sensor = sensor
+            self.z = np.zeros((sensor.dim_meas, 1))
+            self.z[0] = z[0]
+            self.z[1] = z[1]
 
             ############
             # END student code
