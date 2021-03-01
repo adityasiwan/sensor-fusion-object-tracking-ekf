@@ -146,13 +146,15 @@ class Association:
             KF.update(track, meas_list[ind_meas])
 
             # update score and track state
-            manager.handle_updated_track(track)
+            if meas_list[0].sensor.name == 'lidar':
+                manager.handle_updated_track(track)
 
             # save updated track
             manager.track_list[ind_track] = track
 
         # run track management
-        manager.manage_tracks(self.unassigned_tracks, self.unassigned_meas, meas_list)
+        if meas_list[0].sensor.name == 'lidar':
+            manager.manage_tracks(self.unassigned_tracks, self.unassigned_meas, meas_list)
 
         for track in manager.track_list:
             print('track', track.id, 'score =', track.score)

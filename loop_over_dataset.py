@@ -79,7 +79,7 @@ lidar = None # init lidar sensor object
 camera = None # init camera sensor object
 
 ## Selective execution and visualization
-exec_data = ['load_image']  # options are 'pcl_from_rangeimage', 'load_image'
+exec_data = []  # options are 'pcl_from_rangeimage', 'load_image'
 exec_detection = []  # options are 'bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'; options not in the list will be loaded from file
 exec_tracking = ['perform_tracking']  # options are 'perform_tracking'
 exec_visualization = ['show_tracks']  # options are 'show_range_image', 'show_labels_in_image', 'show_objects_and_labels_in_bev', 'show_objects_in_bev_labels_in_camera', 'show_tracks', 'show_detection_performance', 'make_tracking_movie'

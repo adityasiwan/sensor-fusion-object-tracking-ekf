@@ -66,7 +66,7 @@ class Track:
         self.width = meas.width
         self.length = meas.length
         self.height = meas.height
-        self.yaw =  np.arccos(Rot[0,0]*np.cos(meas.yaw) + Rot[0,1]*np.sin(meas.yaw)) # transform rotation from sensor to vehicle coordinates
+        self.yaw = np.arccos(Rot[0,0]*np.cos(meas.yaw) + Rot[0,1]*np.sin(meas.yaw)) # transform rotation from sensor to vehicle coordinates
         self.t = meas.t
 
     def set_x(self, x):
@@ -115,11 +115,9 @@ class Trackmanagement:
 
 
         # delete old tracks
-        n = len(self.track_list)
-        for idx in range(n):
-            curr_track = self.track_list[idx]
-            if curr_track.score < params.delete_threshold and (curr_track.P[0, 0] > params.max_P or curr_track.P[1, 1] > params.max_P):
-                self.delete_track(curr_track)
+        for track in self.track_list:
+            if track.score < params.delete_threshold and (track.P[0, 0] > params.max_P or track.P[1, 1] > params.max_P):
+                self.delete_track(track)
 
         ############
         # END student code
@@ -149,11 +147,11 @@ class Trackmanagement:
         # - increase track score
         # - set track state to 'tentative' or 'confirmed'
         ############
-
-        if track.score > params.confirmed_threshold:
-            track.state = 'confirmed'
-        else:
+        track.score = track.score + 1 / params.window
+        if track.state == 'initialized' and track.score > params.tentative_threshold:
             track.state = 'tentative'
+        if track.state == 'tentative' and track.score > params.confirmed_threshold:
+            track.state = 'confirmed'
 
         ############
         # END student code
