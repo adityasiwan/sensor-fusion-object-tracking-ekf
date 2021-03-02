@@ -1,56 +1,49 @@
-## 3D Object Detection
-
-### Range Image
-
-![range_image](./img/range_image.png)
+## Project: Sensor Fusion and Object Detection
 
 
-### BEV Map Visualization
+### Write a short recap of the four tracking steps and what you implemented there (EKF, track management, data association, camera-lidar sensor fusion). Which results did you achieve?
 
-Below are various examples of vehicles with varying degrees of visibility in the point-cloud
+#### Step 1 : EKF Tracking
 
-![image 1](./img/point_cloud/1.png)
+![tracking-1](./img/final/step-1/tracking.png)
 
-![image 2](./img/point_cloud/2.png)
-
-![image 3](./img/point_cloud/3.png)
-
-![image 4](./img/point_cloud/4.png)
-
-![image 5](./img/point_cloud/5.png)
-
-![image 6](./img/point_cloud/6.png)
-
-![image 7](./img/point_cloud/7.png)
-
-![image 8](./img/point_cloud/8.png)
-
-![image 9](./img/point_cloud/9.png)
-
-![image 10](./img/point_cloud/10.png)
-
-From the point clouds, stable features that appear on most of the vehicles can be identified such as rear-bumper, tail-lights, windshield and vehicle roof. Interestingly, the point cloud also captures intersections and vehicles standing in the parking lot as seen in some of the point clouds above and the vehicles standing in the parking lot also possesses the same set of stable features mentioned before.
+![rmse-1](./img/final/step-1/rmse.png)
 
 
-### Intensity Layer
+#### Step 2 : Track Management
 
-![intnsity_layer](./img/intensity.png)
+![tracking-2](./img/final/step-2/tracking.png)
+
+![rmse-2](./img/final/step-2/rmse.png)
 
 
-### Height Layer
+#### Step 3 : Data Association
 
-![height_layer](./img/height.png)
+![tracking-3](./img/final/step-3/tracking.png)
 
-### Model-based Object Detection in BEV Image
+![rmse-3](./img/final/step-3/rmse.png)
 
-![labels_detected](./img/labels_detected.png)
+![console-3](./img/final/step-3/console.png)
 
-![labels_detected1](./img/labels_detected1.png)
 
-### Performance Evaluation for Object Detection
+#### Step 4 : Camera-Lidar Fusion
 
-![det_eval](./img/Figure_act_detection.png)
+![result-4](./img/final/step-4/result.gif)
 
-![precision_recall](./img/precision_recall.png)
+![rmse-4](./img/final/step-4/rmse.png)
 
-![actual_eval](./img/Figure_ground_truth_perfect.png)
+
+
+### Which part of the project was most difficult for you to complete, and why?
+
+
+
+### Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)?
+
+
+
+### Which challenges will a sensor fusion system face in real-life scenarios? Did you see any of these challenges in the project?
+
+
+
+### Can you think of ways to improve your tracking results in the future?
