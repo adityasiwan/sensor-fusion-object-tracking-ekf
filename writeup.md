@@ -5,9 +5,13 @@
 
 #### Step 1 : EKF Tracking
 
-The first step includes completing the code in the `filter.py` file. A kalman filter is designed with [x,y,z,vx,vy,vz]. The system matrix for the constant velocity process model in 3D and the corresponding process noise covariance depending on the current timestep is calculated. Likewise, the state x and covariance P is updated with associated measurements.
+The first step includes completing the code in the `filter.py` file. A kalman filter is designed with [x,y,z,vx,vy,vz]. The system matrix for the constant velocity process model in 3D and the corresponding process noise covariance depending on the current timestep is calculated. Likewise, the state x and covariance P is updated with the associated measurements.
+
+##### Tracking
 
 ![tracking-1](./img/final/step-1/tracking.png)
+
+##### RMSE Chart
 
 The mean of the RMSE plot at this point is 0.31 which is smaller than the 0.35 as required.
 
@@ -16,11 +20,17 @@ The mean of the RMSE plot at this point is 0.31 which is smaller than the 0.35 a
 
 #### Step 2 : Track Management
 
-The second step involves the initialization of new tracks and adjusting the track score for unassigned tracks if it is too high. The tracks have `score` and `state` as attributes. The track state is constantly updated based on its score into `initialized`, `tentative` or `confirmed`. The thresholds for this update are modified based on experiments in the `params.py` file. The tracks are also deleted if the score is very low OR the covariance of px or py bigger than the threshold.
+The second step involves the initialization of new tracks and adjusting the track score for unassigned tracks if it is too high. The tracks have `score` and `state` as attributes. The track state is constantly updated based on its score into `initialized`, `tentative` or `confirmed`. The thresholds for this update are modified based on experiments in the `params.py` file. The tracks are also deleted if the score is very low OR the covariance of px or py is bigger than the threshold.
+
+After completing this step, we can see from the below snap that a new track is initialized and confirmed and once the vehicle vanishes from the visible range the tracks are deleted.
+
+##### Tracking
 
 After completing this step, we can see from the below snap that a new track is initialized and confirmed and once the vehicle vanishes from the visible range the tracks are deleted.
 
 ![tracking-2](./img/final/step-2/tracking.png)
+
+##### RMSE Chart
 
 ![rmse-2](./img/final/step-2/rmse.png)
 
@@ -31,7 +41,13 @@ The third step includes completing the code in `associaion.py`. Mahalanobis dist
 
 After implementing this step, we can see that multiple tracks are updated with multiple measurements. The initialized or tentative “ghost tracks” are deleted if they are not confirmed even after several frames.
 
+##### Tracking
+
+After implementing this step, we can see that multiple tracks are updated with multiple measurements. The initialized or tentative “ghost tracks” are deleted if they are not confirmed even after several frames.
+
 ![tracking-3](./img/final/step-3/tracking.png)
+
+##### RMSE Chart
 
 ![rmse-3](./img/final/step-3/rmse.png)
 
@@ -44,11 +60,15 @@ After implementing this step, we can see that multiple tracks are updated with m
 
 The last step involves completing the code in `measurements.py`. In this part, camera measurements are used to complete the sensor fusion module for camera-lidar fusion. The vehicle coordinates are transformed to sensor coordinates and `in_fov()` is implemented to check if the input state vector x of an object can be seen by the sensor. `get_hx()` is implemented to project camera coordinates to image coordinates and camera measurement objects are initialized in the `Measurement` class.
 
+##### Tracking Movie
+
 After implementing this step, we can see that the tracking performs well with no track losses in the gif below. We can also see that the tracks are first initialized(in red) and then moved to tentative(in orange) before getting confirmed(in green).
 
 ![result-4](./img/final/step-4/result.gif)
 
-The first two tracks RMSE track 0(blue line) and RMSE track 1(orange line) are tracked from the beginning to the end(frame 0 - 200) without any track loss. The tracking for the third track RMSE track 7(green line) starts from the 10th second until the end without any track loss too. The mean RMSE for all the tracks are below 0.25 as required.
+##### RMSE Chart
+
+The first two tracks, RMSE track 0(blue line) and RMSE track 1(orange line) are tracked from the beginning to the end(frame 0 - 200) without any track loss. The tracking for the third track RMSE track 7(green line) starts from the 10th second until the end without any track loss too. The mean RMSE for all the tracks are below 0.25 as required.
 
 ![rmse-4](./img/final/step-4/rmse.png)
 
@@ -56,7 +76,7 @@ The first two tracks RMSE track 0(blue line) and RMSE track 1(orange line) are t
 
 ### Which part of the project was most difficult for you to complete, and why?
 
-Although, the instructions to complete the steps are clear and the structure of the project is organized but at the same time it is complex. There were times when the results for the RMSE charts were not coming as expected and I had to do a lot of debugging only to find a small mistake. Another difficult part was to play around with the parameters in the `params.py` file to get the best results.
+Although, the instructions to complete the steps are clear and the structure of the project is organized but at the same time it is complex. There were times when the results for the RMSE charts were not coming as expected and I had to do a lot of debugging only to find some small mistakes here or there. Another difficult part was to play around with the parameters in the `params.py` file to get the optimal result.
 
 ### Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)?
 
