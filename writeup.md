@@ -64,7 +64,7 @@ The last step involves completing the code in `measurements.py`. In this part, c
 
 After implementing this step, we can see that the tracking performs well with no track losses in the gif below. We can also see that the tracks are first initialized(in red) and then moved to tentative(in orange) before getting confirmed(in green).
 
-![result-4](./img/final/step-4/result.gif)
+[![Result](https://img.youtube.com/vi/42f8Kkhv_cc/0.jpg)](https://www.youtube.com/watch?v=42f8Kkhv_cc)
 
 ##### RMSE Chart
 
