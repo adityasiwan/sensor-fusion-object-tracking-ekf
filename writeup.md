@@ -3,7 +3,7 @@
 
 ### Write a short recap of the four tracking steps and what you implemented there (EKF, track management, data association, camera-lidar sensor fusion). Which results did you achieve?
 
-#### Step 1 : EKF Tracking
+#### **Step 1 : EKF Tracking**
 
 The first step includes completing the code in the `filter.py` file. A kalman filter is designed with [x,y,z,vx,vy,vz]. The system matrix for the constant velocity process model in 3D and the corresponding process noise covariance depending on the current timestep is calculated. Likewise, the state x and covariance P is updated with the associated measurements.
 
@@ -18,7 +18,7 @@ The mean of the RMSE plot at this point is 0.31 which is smaller than the 0.35 a
 ![rmse-1](./img/final/step-1/rmse.png)
 
 
-#### Step 2 : Track Management
+#### **Step 2 : Track Management**
 
 The second step involves the initialization of new tracks and adjusting the track score for unassigned tracks if it is too high. The tracks have `score` and `state` as attributes. The track state is constantly updated based on its score into `initialized`, `tentative` or `confirmed`. The thresholds for this update are modified based on experiments in the `params.py` file. The tracks are also deleted if the score is very low OR the covariance of px or py is bigger than the threshold.
 
@@ -28,14 +28,37 @@ After completing this step, we can see from the below snap that a new track is i
 
 After completing this step, we can see from the below snap that a new track is initialized and confirmed and once the vehicle vanishes from the visible range the tracks are deleted.
 
-![tracking-2](./img/final/step-2/tracking.png)
+<!--![tracking-2](./img/final/step-2/tracking.png)-->
+
+![tracking-2](./img/final/step-2/tracking2.gif)
 
 ##### RMSE Chart
 
+The RMSE is quite high at this point `0.79` which is because the lidar detections contain a y-offset. We will comensate this off-set in the next steps when we use camera-lidar fusion.
+
 ![rmse-2](./img/final/step-2/rmse.png)
 
+##### Rubrics for Track Management
 
-#### Step 3 : Data Association
+###### Track initialization from unassigned measurements is implemented.
+
+The unassigned measurement from sensor to vehicle coordinates are transformed using `sens_to_veh` and initialized at Line(38-56) in `trackmanagement.py`
+
+###### A track score is defined and implemented. / Track states are defined and implemented, e.g. “tentative”, “confirmed”.
+
+The track score and track state is initialized as `1. / params.window` and `initialized` respectively at Line(57-58) in `trackmanagement.py`
+
+###### Old tracks are deleted for not updated tracks.
+
+Old tracks are deleted if the track score is less than the `delete_threshold` and if covariance of px or py is too big at Line(118-120) in `trackmanagement.py`
+
+###### The tracking works properly if you see the following results: After applying the track management to a new sequence (see instructions), the visualization shows that a new track is initialized automatically where unassigned measurements occur, the true track is confirmed quickly, and the track is deleted after it has vanished from the visible range. There is one single track without track losses in between.
+
+I have added a gif of the execution which shows that the track is initialized automatically where unassigned measurements occur, the true track is confirmed quickly, and the track is deleted after it has vanished from the visible range for sequence 2. Also, the RMSE for sequence 2 is 0.79 which is also discussed above.
+
+
+
+#### **Step 3 : Data Association**
 
 The third step includes completing the code in `associaion.py`. Mahalanobis distance is calculated for all the tracks and measurements pair and subsequently `gating_ok()` function is used to check if a measurement lies inside a track's gate. Then, the corresponding track and measurement for the minimum entry in association_matrix is removed until all track measurement pairs are processed.
 
@@ -56,13 +79,13 @@ After implementing this step, we can see that multiple tracks are updated with m
 -->
 
 
-#### Step 4 : Camera-Lidar Fusion
+#### **Step 4 : Camera-Lidar Fusion**
 
 The last step involves completing the code in `measurements.py`. In this part, camera measurements are used to complete the sensor fusion module for camera-lidar fusion. The vehicle coordinates are transformed to sensor coordinates and `in_fov()` is implemented to check if the input state vector x of an object can be seen by the sensor. `get_hx()` is implemented to project camera coordinates to image coordinates and camera measurement objects are initialized in the `Measurement` class.
 
 ##### Tracking Movie
 
-After implementing this step, we can see that the tracking performs well with no track losses in the gif below. We can also see that the tracks are first initialized(in red) and then moved to tentative(in orange) before getting confirmed(in green).
+After implementing this step, we can see that the tracking performs well with no track losses in the video below. We can also see that the tracks are first initialized(in red) and then moved to tentative(in orange) before getting confirmed(in green).
 
 [![Result](https://img.youtube.com/vi/42f8Kkhv_cc/0.jpg)](https://www.youtube.com/watch?v=42f8Kkhv_cc)
 
